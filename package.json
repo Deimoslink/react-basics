@@ -1,0 +1,34 @@
+{
+  "name": "react-basics",
+  "version": "1.0.0",
+  "description": "react basics for epam mentoring program",
+  "main": "index.js",
+  "scripts": {
+  	"start": "npm run build",
+  	"build": "webpack -d && cp src/index.html dist/index.html && webpack-dev-server --content-base src/ --inline --hot",
+  	"build:prod": "webpack -p && copy src/index.html dist/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deimoslink/react-basics.git"
+  },
+  "author": "Aleksandr_Linkov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Deimoslink/react-basics/issues"
+  },
+  "homepage": "https://github.com/Deimoslink/react-basics#readme",
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  }
+}
