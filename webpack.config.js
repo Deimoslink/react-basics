@@ -19,6 +19,9 @@ var config = {
       query: {
         presets: ['react', 'es2015', 'stage-2']
       }
+    },{
+      test: /\.(jpg|png|ico)$/,
+      loader: 'file-loader'
     }]
   }
 };
