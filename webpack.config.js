@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -47,6 +48,10 @@ module.exports = {
         ]
     },
     plugins: [
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.DefinePlugin({
+            PRODUCTION: process.env.NODE_ENV
+        }),
         extractPlugin,
         new HtmlWebpackPlugin({
             template: 'src/index.html'

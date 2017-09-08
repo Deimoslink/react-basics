@@ -21,3 +21,7 @@ class App extends React.Component {
 }
 
 render(<App/>, window.document.getElementById('app'));
+
+if (PRODUCTION) {
+    console.log('Production mode is on');
+}
