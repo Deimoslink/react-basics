@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --content-base --inline --hot",
     "build": "webpack",
-    "buildprod": "webpack -p"
+    "buildprod": "webpack -p",
+    "server": "node server/server.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/Deimoslink/react-basics#readme",
   "dependencies": {
+    "express": "^4.15.4",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   },
