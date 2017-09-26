@@ -23,12 +23,12 @@ button:focus {
 	flex-direction: column;
 	height: 160px;
 	padding: 0 80px;
-	background-color: rgba(0, 0, 0, 0.9);
+	background-color: rgba(0, 0, 0, 0.7);
 	color: white;
 }
 .header::after {
   content: "";
-  background: url(assets/header-background.jpg);
+  background: url(header-background.jpg);
   top: 0;
   left: 0;
   bottom: 0;
