@@ -12,7 +12,8 @@ module.exports = {
     entry: './src/js/app.jsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         rules: [
@@ -46,6 +47,13 @@ module.exports = {
                 ]
             }
         ]
+    },
+    devServer: {
+        inline: true,
+        contentBase: './',
+        historyApiFallback: {
+            index: 'index.html'
+        }
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
