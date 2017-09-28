@@ -51,9 +51,7 @@ module.exports = {
     devServer: {
         inline: true,
         contentBase: './',
-        historyApiFallback: {
-            index: 'index.html'
-        }
+        historyApiFallback: true
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),
