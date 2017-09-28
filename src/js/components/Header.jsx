@@ -1,6 +1,30 @@
 import React from 'react';
 
 export class Header extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchBy: 'title',
+            searchQuery: ''
+        };
+    }
+
+    toggleSearch(mode) {
+        this.setState({
+            searchBy: mode
+        });
+        console.log('search by', mode);
+    }
+
+    onTriggerSearch() {
+        this.props.search(this.state.searchQuery, this.state.searchBy);
+    }
+
+    onHandleChange(e) {
+        this.setState({searchQuery: e.target.value});
+    }
+
     render() {
         return (
             <div className="header">
@@ -11,20 +35,30 @@ export class Header extends React.Component {
                     <h1>Find your movie</h1>
                 </div>
                 <div className="header-row input-wrapper">
-                    <input type="text" placeholder="Quentin Tarantino"/>
-                    <i className="fa fa-level-down" aria-hidden="true"></i>
+                    <input type="text" placeholder="Christopher Nolan" value={this.state.searchQuery} onChange={(e) => this.onHandleChange(e)} />
+                    <i className="fa fa-level-down"></i>
                 </div>
                 <div className="header-row button-wrapper">
                     <div className="filter-panel">
                         <span>Search by</span>
-                        <button className="button button-small active">Title</button>
-                        <button className="button button-small">Director</button>
+                        <button onClick={this.toggleSearch.bind(this, 'title')}
+                                className={`button button-small ${this.state.searchBy === 'title' ? 'active' : null}`}>
+                            Title
+                        </button>
+                        <button onClick={this.toggleSearch.bind(this, 'director')}
+                                className={`button button-small ${this.state.searchBy === 'director' ? 'active' : null}`}>
+                            Director
+                        </button>
                     </div>
                     <div>
-                        <button className="button button-big active">Search</button>
+                        <button onClick={this.onTriggerSearch.bind(this)} className="button button-big active">Search</button>
                     </div>
                 </div>
             </div>
         );
     }
 }
+
+Header.propTypes = {
+    search: React.PropTypes.func
+};

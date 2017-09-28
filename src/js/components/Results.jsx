@@ -15,7 +15,6 @@ export class Results extends React.Component {
     chunks = this.chunkify(this.results, 3);
 
     render() {
-        console.log(this.chunks);
         return (
             <div className="results">{this.chunks.map(chunk =>
                 <div className="movies-row">
