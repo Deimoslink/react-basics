@@ -13,11 +13,10 @@ export class Results extends React.Component {
 
     render() {
         let chunks = this.chunkify(this.props.results, 3);
-        console.log('chunks', chunks);
         return (
             <div className="results">{chunks.map((chunk, j) =>
                 <div className="movies-row" key={j}>
-                    {chunk.map((el, i) => <Movie title={el.show_title} key={i} />)}
+                    {chunk.map((el, i) => <Movie movie={el} key={j + '' + i}/>)}
                 </div>)}
                 <span hidden={this.props.results.length}>No results found</span>
             </div>

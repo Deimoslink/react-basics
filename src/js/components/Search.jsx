@@ -10,19 +10,16 @@ export class Search extends React.Component {
 
     constructor() {
         super();
-        this.state = { results: [] };
-
+        this.state = {results: [], sortBy: 'rating'};
     }
-    // results = [];
 
     jsonToQueryString(json) {
         return '?' +
-            Object.keys(json).map(function(key) {
+            Object.keys(json).map(function (key) {
                 return encodeURIComponent(key) + '=' +
                     encodeURIComponent(json[key]);
             }).join('&');
     }
-
 
     triggerSearch(q, m) {
         console.log('searching for', q, 'by', m);
@@ -32,25 +29,45 @@ export class Search extends React.Component {
         axios.get(queryUrl)
             .then(res => {
                 console.log(res);
+                let result = [];
                 if (res.data instanceof Array) {
-                    this.setState({results: res.data});
+                    result = res.data;
                 } else {
-                    this.setState({results: [res.data]});
+                    result = [res.data];
                 }
+                this.performSort(result);
             })
             .catch(err => {
                 this.setState({results: []});
             });
     }
 
+    triggerSort(s) {
+        this.setState({sortBy: s}, () => {
+            this.performSort(this.state.results)
+        });
+
+    }
+
+    performSort(result) {
+        console.log('perform sorting by', this.state.sortBy);
+        let arr = result.sort((a, b) => {
+            if (a[this.state.sortBy] < b[this.state.sortBy]) return -1;
+            if (a[this.state.sortBy] > b[this.state.sortBy]) return 1;
+            return 0;
+        });
+        this.setState({results: arr});
+        console.log(arr);
+    }
+
     render() {
         return (
-        <div className="body">
-            <Header search={this.triggerSearch.bind(this)} />
-            <SubHeader/>
-            <Results results={this.state.results} />
-            <Footer/>
-        </div>
+            <div className="body">
+                <Header search={this.triggerSearch.bind(this)}/>
+                <SubHeader sort={this.triggerSort.bind(this)} total={this.state.results.length}/>
+                <Results results={this.state.results}/>
+                <Footer/>
+            </div>
         );
     }
 }

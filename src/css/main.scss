@@ -136,10 +136,26 @@ button:focus {
   width: 880px;
 }
 .movie {
-  background-color: #FF0000;
-  height: 400px;
+  min-height: 470px;
   width: 250px;
   margin: 0 22px;
+  position: relative;
+}
+.movie h2 {
+  max-width: 200px;
+  text-overflow: clip;
+  margin: 0;
+}
+.movie .year {
+  position: absolute;
+  right: 0;
+  top: 404px;
+  border: 1px solid grey;
+  padding: 2px 5px;
+}
+.movie img {
+  height: 400px;
+  width: 250px;
 }
 .footer {
   align-items: center;
