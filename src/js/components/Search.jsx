@@ -28,7 +28,6 @@ export class Search extends React.Component {
         let queryUrl = 'https://netflixroulette.net/api/api.php' + queryStr;
         axios.get(queryUrl)
             .then(res => {
-                console.log(res);
                 let result = [];
                 if (res.data instanceof Array) {
                     result = res.data;
@@ -38,6 +37,7 @@ export class Search extends React.Component {
                 this.performSort(result);
             })
             .catch(err => {
+                console.log(err);
                 this.setState({results: []});
             });
     }
@@ -57,7 +57,6 @@ export class Search extends React.Component {
             return 0;
         });
         this.setState({results: arr});
-        console.log(arr);
     }
 
     render() {
