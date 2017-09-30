@@ -23,25 +23,56 @@ button {
 button:focus {
   outline: none;
 }
-.header {
+.header, .film-header {
   position: relative;
   flex-direction: column;
-  height: 160px;
   padding: 0 80px;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
+  &::after {
+    content: "";
+    background: url(../img/header-background.jpg);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: -1;
+  }
 }
-.header::after {
-  content: "";
-  background: url(../img/header-background.jpg);
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  position: absolute;
-  z-index: -1;
+.header {
+  height: 160px;
 }
-.header h1 {
+.film-header {
+  min-height: 460px;
+  > div {
+    display: flex;
+    flex-direction: row;
+  }
+}
+.film-header-logo-wrapper {
+  height: 30px;
+  color: #FF3333;
+}
+.movie-description {
+  padding-left: 40px;
+  .movie-title {
+    color: #FF3333;
+    .rating-badge {
+      color: cadetblue;
+      font-size: 20px;
+      border-radius: 50%;
+      border: 1px solid cadetblue;
+      padding: 2px;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      display: inline-block;
+      margin-left: 20px;
+    }
+  }
+}
+.header h1, .film-header h1 {
   margin: 0;
 }
 .header input {
@@ -153,7 +184,7 @@ button:focus {
   border: 1px solid grey;
   padding: 2px 5px;
 }
-.movie img {
+.movie img, .poster {
   height: 400px;
   width: 250px;
 }
