@@ -12,9 +12,9 @@ class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    <Route path="/" component={Search} exact/>
-                    <Route path="/film" component={Film}/>
-                    <Route path="*" component={Search}/>
+                    <Route path="/search" component={Search} />
+                    <Route path="/film" component={Film} />
+                    {/*<Route path="*" component={Search}/>*/}
                 </Switch>
             </Router>
         );

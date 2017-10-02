@@ -32,26 +32,40 @@ export class Film extends React.Component {
             });
     }
 
-    movieExample = {
-        category: "Thrillers",
-        director: "Christopher Nolan",
-        mediatype: 0,
-        poster: "http://netflixroulette.net/api/posters/60022968.jpg",
-        rating: "3.3",
-        runtime: "N/A",
-        show_cast: "Al Pacino, Robin Williams, Hilary Swank, Oliver 'Ole' Zemen, Martin Donovan, Paul Dooley, Nicky Katt, Larry Holden, Maura Tierney, Jonathan Jackson, Jay Brazeau, Katharine Isabelle",
-        show_id: 60022968,
-        show_title: "Insomnia",
-        summary: "Sent to investigate a teenage girl's murder in a small Alaska town, a detective accidentally shoots his partner while trying to apprehend a suspect.",
-        unit: 47451
-    };
-
     componentWillMount() {
-        this.setState({movie: this.props.location.state.movie}, () => {this.triggerSearch();})
+        console.log('component will mount', this.props.location);
+        if (this.props.location.state) {
+            this.setState({movie: this.props.location.state.movie}, () => {
+                this.triggerSearch();
+            })
+        } else {
+            console.log('pure loading!!!', this.props.location.search);
+            let queryUrl = 'https://netflixroulette.net/api/api.php' + this.props.location.search;
+            axios.get(queryUrl)
+                .then(res => {
+                    this.setState({movie: res.data});
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        console.log('receive new props', newProps.location.search);
+        let queryUrl = 'https://netflixroulette.net/api/api.php' + newProps.location.search;
+        axios.get(queryUrl)
+            .then(res => {
+                this.setState({movie: res.data});
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     render() {
-        console.log('params', this.props.location.state.movie);
         return (
             <div className="body">
                 <FilmHeader movie={this.state.movie}/>
