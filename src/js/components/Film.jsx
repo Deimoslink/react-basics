@@ -40,7 +40,7 @@ export class Film extends React.Component {
             })
         } else {
             console.log('pure loading!!!', this.props.location.search);
-            let queryUrl = 'https://netflixroulette.net/api/api.php' + this.props.location.search;
+            let queryUrl = 'https://netflixroulette.net/api/api.php?title=' + this.props.match.params.title;
             axios.get(queryUrl)
                 .then(res => {
                     this.setState({movie: res.data}, () => {
@@ -55,8 +55,7 @@ export class Film extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log('receive new props', newProps.location.search);
-        let queryUrl = 'https://netflixroulette.net/api/api.php' + newProps.location.search;
+        let queryUrl = 'https://netflixroulette.net/api/api.php?title=' + newProps.match.params.title;
         axios.get(queryUrl)
             .then(res => {
                 this.setState({movie: res.data});

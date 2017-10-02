@@ -6,7 +6,7 @@ export class Movie extends React.Component {
     render() {
         return (
             <div className="movie">
-                <Link to={{pathname: "/film?title=" + this.props.movie.show_title, state: {movie: this.props.movie}}}
+                <Link to={{pathname: "/film/" + this.props.movie.show_title, state: {movie: this.props.movie}}}
                       style={{textDecoration: 'none', color: 'inherit'}}>
                     <img src={this.props.movie.poster} alt=""/>
                     <h2>{this.props.movie.show_title}</h2>

@@ -2,8 +2,8 @@ import React from 'react';
 
 export class Header extends React.Component {
 
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             searchBy: 'title',
             searchQuery: ''
@@ -23,6 +23,10 @@ export class Header extends React.Component {
 
     onHandleChange(e) {
         this.setState({searchQuery: e.target.value});
+    }
+
+    componentWillMount() {
+        this.setState({searchBy: this.props.searchState.mode, searchQuery: this.props.searchState.query})
     }
 
     render() {
@@ -60,5 +64,6 @@ export class Header extends React.Component {
 }
 
 Header.propTypes = {
-    search: React.PropTypes.func
+    search: React.PropTypes.func,
+    searchState: React.PropTypes.object
 };

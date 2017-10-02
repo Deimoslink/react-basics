@@ -14,7 +14,7 @@ export class Search extends React.Component {
     }
 
     jsonToQueryString(json) {
-        return '?' +
+        return '' +
             Object.keys(json).map(function (key) {
                 return encodeURIComponent(key) + '=' +
                     encodeURIComponent(json[key]);
@@ -22,18 +22,20 @@ export class Search extends React.Component {
     }
 
     triggerSearch(q, m) {
-        console.log('searching for', q, 'by', m);
+        console.log('searching for!', q, 'by', m);
         let queryObj = {[m]: q};
         let queryStr = this.jsonToQueryString(queryObj);
-        let queryUrl = 'https://netflixroulette.net/api/api.php' + queryStr;
-        this.performSearch(queryUrl);
+        let queryUrl = 'https://netflixroulette.net/api/api.php?' + queryStr;
+        this.performSearch(queryUrl, queryStr);
     }
 
-    performSearch(queryUrl) {
+    performSearch(queryUrl, queryStr) {
+        if (queryStr) {
+            this.props.history.push('/search/' + queryStr);
+        }
         axios.get(queryUrl)
             .then(res => {
-                this.props.history.push(queryStr);
-                console.log(this.props.history);
+                console.log(this.props.match.params.query);
                 let result = [];
                 if (res.data instanceof Array) {
                     result = res.data;
@@ -52,7 +54,6 @@ export class Search extends React.Component {
         this.setState({sortBy: s}, () => {
             this.performSort(this.state.results)
         });
-
     }
 
     performSort(result) {
@@ -66,9 +67,12 @@ export class Search extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.location.search) {
-            let queryUrl = 'https://netflixroulette.net/api/api.php' + this.props.location.search;
-            this.performSearch(queryUrl);
+        if (this.props.match.params.query) {
+            let m = this.props.match.params.query.slice(0, this.props.match.params.query.indexOf('='));
+            let q = this.props.match.params.query.slice(this.props.match.params.query.indexOf('=') + 1);
+            this.setState({searchState: {mode: m, query: q}});
+            let queryUrl = 'https://netflixroulette.net/api/api.php?' + this.props.match.params.query;
+            this.performSearch(queryUrl, null);
         } else {
             console.log('query is empty');
         }
@@ -77,7 +81,7 @@ export class Search extends React.Component {
     componentWillReceiveProps(newProps) {
         if (newProps.location.search) {
             let queryUrl = 'https://netflixroulette.net/api/api.php' + newProps.location.search;
-            this.performSearch(queryUrl);
+            this.performSearch(queryUrl, null);
         } else {
             console.log('query is empty');
         }
@@ -86,7 +90,7 @@ export class Search extends React.Component {
     render() {
         return (
             <div className="body">
-                <Header search={this.triggerSearch.bind(this)}/>
+                <Header search={this.triggerSearch.bind(this)} searchState={this.state.searchState} />
                 <SubHeader sort={this.triggerSort.bind(this)} total={this.state.results.length}/>
                 <Results results={this.state.results}/>
                 <Footer/>

@@ -12,8 +12,9 @@ class App extends React.Component {
         return (
             <Router>
                 <Switch>
-                    <Route path="/search" component={Search} exact/>
-                    <Route path="/film" component={Film} exact/>
+                    <Route path="/search/:query" component={Search} exact={false}/>
+                    <Route path="/film/:title" component={Film} />
+                    <Route path="*" component={Search}/>
                 </Switch>
             </Router>
         );
