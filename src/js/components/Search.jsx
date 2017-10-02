@@ -26,6 +26,10 @@ export class Search extends React.Component {
         let queryObj = {[m]: q};
         let queryStr = this.jsonToQueryString(queryObj);
         let queryUrl = 'https://netflixroulette.net/api/api.php' + queryStr;
+        this.performSearch(queryUrl);
+    }
+
+    performSearch(queryUrl) {
         axios.get(queryUrl)
             .then(res => {
                 this.props.history.push(queryStr);
@@ -63,48 +67,17 @@ export class Search extends React.Component {
 
     componentWillMount() {
         if (this.props.location.search) {
-            console.log('searching for query', this.props.location.search);
             let queryUrl = 'https://netflixroulette.net/api/api.php' + this.props.location.search;
-            axios.get(queryUrl)
-                .then(res => {
-                    let result = [];
-                    if (res.data instanceof Array) {
-                        result = res.data;
-                    } else {
-                        result = [res.data];
-                    }
-                    this.performSort(result);
-                })
-                .catch(err => {
-                    console.log(err);
-                    this.setState({results: []});
-                });
-
+            this.performSearch(queryUrl);
         } else {
             console.log('query is empty');
         }
     }
 
     componentWillReceiveProps(newProps) {
-        console.log('receive new props', newProps);
         if (newProps.location.search) {
-            console.log('searching for query', newProps.location.search);
             let queryUrl = 'https://netflixroulette.net/api/api.php' + newProps.location.search;
-            axios.get(queryUrl)
-                .then(res => {
-                    let result = [];
-                    if (res.data instanceof Array) {
-                        result = res.data;
-                    } else {
-                        result = [res.data];
-                    }
-                    this.performSort(result);
-                })
-                .catch(err => {
-                    console.log(err);
-                    this.setState({results: []});
-                });
-
+            this.performSearch(queryUrl);
         } else {
             console.log('query is empty');
         }

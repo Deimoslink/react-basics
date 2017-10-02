@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from "react-router-dom";
 
 export class FilmHeader extends React.Component {
 
@@ -11,6 +12,11 @@ export class FilmHeader extends React.Component {
             <div className="film-header">
                 <div className="film-header-logo-wrapper">
                     <span>netflixroulette</span>
+                    <button className="button button-big active search-btn">
+                        <Link to={{pathname: "/search"}} style={{textDecoration: 'none', color: 'inherit'}}>
+                            Search
+                        </Link>
+                    </button>
                 </div>
                 <div>
                     <img className="poster" src={this.props.movie.poster} alt=""/>

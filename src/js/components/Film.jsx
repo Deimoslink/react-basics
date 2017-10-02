@@ -43,7 +43,9 @@ export class Film extends React.Component {
             let queryUrl = 'https://netflixroulette.net/api/api.php' + this.props.location.search;
             axios.get(queryUrl)
                 .then(res => {
-                    this.setState({movie: res.data});
+                    this.setState({movie: res.data}, () => {
+                        this.triggerSearch();
+                    });
                     console.log(res);
                 })
                 .catch(err => {
