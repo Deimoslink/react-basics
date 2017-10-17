@@ -10,7 +10,11 @@ export class Search extends React.Component {
 
     constructor() {
         super();
-        this.state = {results: [], sortBy: 'rating'};
+        this.state = {results: [], sortBy: 'vote_average', searchState: {mode: 'title', query: ''}};
+    }
+
+    replaceSpaces(str) {
+        return str.replace(/ /g, '+');
     }
 
     jsonToQueryString(json) {
@@ -21,27 +25,43 @@ export class Search extends React.Component {
             }).join('&');
     }
 
+    searchOtherMoviesByDirector(queryUrl) {
+        axios.get(queryUrl)
+            .then(res => {
+                console.log('other movies by this director', res.data.results[0].known_for);
+                this.setState({results: res.data.results[0].known_for});
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({results: []});
+            });
+    }
+
     triggerSearch(q, m) {
-        console.log('searching for!', q, 'by', m);
+        console.log('searching for', q, 'by', m);
         let queryObj = {[m]: q};
         let queryStr = this.jsonToQueryString(queryObj);
-        let queryUrl = 'https://netflixroulette.net/api/api.php?' + queryStr;
-        this.performSearch(queryUrl, queryStr);
+        let queryPlusSeparated = this.replaceSpaces(q);
+        let queryUrl;
+        if (m === 'director') {
+            queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
+            this.searchOtherMoviesByDirector(queryUrl);
+        }
+        if (m === 'title') {
+            queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
+            this.performSearch(queryUrl, queryStr);
+        }
     }
 
     performSearch(queryUrl, queryStr) {
+        console.log('perform search', queryUrl, queryStr);
         if (queryStr) {
             this.props.history.push('/search/' + queryStr);
         }
         axios.get(queryUrl)
             .then(res => {
                 console.log(this.props.match.params.query);
-                let result = [];
-                if (res.data instanceof Array) {
-                    result = res.data;
-                } else {
-                    result = [res.data];
-                }
+                let result = res.data.results;
                 this.performSort(result);
             })
             .catch(err => {
@@ -71,14 +91,23 @@ export class Search extends React.Component {
             let m = this.props.match.params.query.slice(0, this.props.match.params.query.indexOf('='));
             let q = this.props.match.params.query.slice(this.props.match.params.query.indexOf('=') + 1);
             this.setState({searchState: {mode: m, query: q}});
-            let queryUrl = 'https://netflixroulette.net/api/api.php?' + this.props.match.params.query;
-            this.performSearch(queryUrl, null);
+            let queryUrl;
+            let queryPlusSeparated = this.replaceSpaces(q);
+            if (m === 'director') {
+                queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
+                this.searchOtherMoviesByDirector(queryUrl);
+            }
+            if (m === 'title') {
+                queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
+                this.performSearch(queryUrl, null);
+            }
         } else {
             console.log('query is empty');
         }
     }
 
     componentWillReceiveProps(newProps) {
+        console.log('new props', newProps.location.search);
         if (newProps.location.search) {
             let queryUrl = 'https://netflixroulette.net/api/api.php' + newProps.location.search;
             this.performSearch(queryUrl, null);

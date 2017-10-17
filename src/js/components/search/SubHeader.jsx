@@ -4,7 +4,7 @@ export class SubHeader extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {sortBy: 'rating'};
+        this.state = {sortBy: 'vote_average'};
     }
 
     toggleSort(mode) {
@@ -21,12 +21,12 @@ export class SubHeader extends React.Component {
                 </div>
                 <div className="filter-panel">
                     <span>Sort by</span>
-                    <button onClick={this.toggleSort.bind(this, 'release_year')}
-                            className={`button button-simple ${this.state.sortBy === 'release_year' ? 'active' : null}`}>
+                    <button onClick={this.toggleSort.bind(this, 'release_date')}
+                            className={`button button-simple ${this.state.sortBy === 'release_date' ? 'active' : null}`}>
                         release date
                     </button>
-                    <button onClick={this.toggleSort.bind(this, 'rating')}
-                            className={`button button-simple ${this.state.sortBy === 'rating' ? 'active' : null}`}>
+                    <button onClick={this.toggleSort.bind(this, 'vote_average')}
+                            className={`button button-simple ${this.state.sortBy === 'vote_average' ? 'active' : null}`}>
                         rating
                     </button>
                 </div>

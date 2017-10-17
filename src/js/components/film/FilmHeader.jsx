@@ -19,14 +19,14 @@ export class FilmHeader extends React.Component {
                     </button>
                 </div>
                 <div>
-                    <img className="poster" src={this.props.movie.poster} alt=""/>
+                    <img className="poster" src={'http://image.tmdb.org/t/p/w185/' + this.props.movie.poster_path} alt=""/>
                     <div className="movie-description">
-                        <h1 className="movie-title">{this.props.movie.show_title}<span className="rating-badge">{this.props.movie.rating}</span></h1>
-                        <p>{this.props.movie.category}</p>
-                        <p>Year: {this.props.movie.release_year || 'N/A'} Runtime: {this.props.movie.runtime || 'N/A'}</p>
+                        <h1 className="movie-title">{this.props.movie.title}<span className="rating-badge">{this.props.movie.vote_average}</span></h1>
+                        {/*<p>{this.props.movie.category}</p>*/}
+                        <p>Year: {this.props.movie.release_date || 'N/A'} Runtime: {this.props.movie.runtime || 'N/A'}</p>
                         <p>{this.props.movie.summary}</p>
-                        <p>Director: {this.props.movie.director || 'N/A'}</p>
-                        <p>Cast: {this.props.movie.show_cast || 'N/A'}</p>
+                        <p>Director: {this.props.director}</p>
+                        <p>Cast: {this.props.cast.map(el => {return (el.name + ', ')}) || 'N/A'}</p>
                     </div>
                 </div>
             </div>
@@ -35,5 +35,7 @@ export class FilmHeader extends React.Component {
 }
 
 FilmHeader.propTypes = {
-    movie: React.PropTypes.object
+    movie: React.PropTypes.object,
+    cast: React.PropTypes.array,
+    director: React.PropTypes.string
 };

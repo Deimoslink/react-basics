@@ -10,21 +10,40 @@ export class Film extends React.Component {
 
     constructor() {
         super();
-        this.state = {results: [], movie: {}};
+        this.state = {results: [], movie: {}, director: 'N/A', cast: []};
+    }
+
+    replaceSpaces(str) {
+        return str.replace(/ /g, '+');
+    }
+
+    searchOtherMoviesByDirector(director) {
+        let queryPlusSeparated = this.replaceSpaces(director);
+        let queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
+        axios.get(queryUrl)
+            .then(res => {
+                console.log('other movies by this director', res.data.results[0].known_for);
+                this.setState({results: res.data.results[0].known_for});
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({results: []});
+            });
     }
 
     triggerSearch() {
-        let queryStr = this.state.movie.director;
-        let queryUrl = 'https://netflixroulette.net/api/api.php?director=' + queryStr;
-        axios.get(queryUrl)
+        let id = this.state.movie.id;
+        let query = 'https://api.themoviedb.org/3/movie/' + id + '?api_key=f3444ae7a15965784cb64735f4647f14&append_to_response=credits';
+        axios.get(query)
             .then(res => {
-                let result = [];
-                if (res.data instanceof Array) {
-                    result = res.data;
-                } else {
-                    result = [res.data];
-                }
-                this.setState({results: result});
+                let director;
+                res.data.credits.crew.forEach(person => {
+                    if (person.job === 'Director') {
+                        director = person.name;
+                    }
+                });
+                this.setState({director: director, cast: res.data.credits.cast});
+                this.searchOtherMoviesByDirector(director);
             })
             .catch(err => {
                 console.log(err);
@@ -40,10 +59,10 @@ export class Film extends React.Component {
             })
         } else {
             console.log('pure loading!!!', this.props.location.search);
-            let queryUrl = 'https://netflixroulette.net/api/api.php?title=' + this.props.match.params.title;
+            let queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + this.props.match.params.title;
             axios.get(queryUrl)
                 .then(res => {
-                    this.setState({movie: res.data}, () => {
+                    this.setState({movie: res.data.results[0]}, () => {
                         this.triggerSearch();
                     });
                     console.log(res);
@@ -55,10 +74,10 @@ export class Film extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        let queryUrl = 'https://netflixroulette.net/api/api.php?title=' + newProps.match.params.title;
+        let queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + newProps.match.params.title;
         axios.get(queryUrl)
             .then(res => {
-                this.setState({movie: res.data});
+                this.setState({movie: res.data.results[0]});
                 console.log(res);
             })
             .catch(err => {
@@ -69,8 +88,8 @@ export class Film extends React.Component {
     render() {
         return (
             <div className="body">
-                <FilmHeader movie={this.state.movie}/>
-                <FilmSubHeader director={this.state.movie.director}/>
+                <FilmHeader movie={this.state.movie} director={this.state.director} cast={this.state.cast}/>
+                <FilmSubHeader director={this.state.director}/>
                 <Results results={this.state.results}/>
                 <Footer/>
             </div>
