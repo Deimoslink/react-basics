@@ -25,7 +25,10 @@ export class Search extends React.Component {
             }).join('&');
     }
 
-    searchOtherMoviesByDirector(queryUrl) {
+    searchOtherMoviesByDirector(queryUrl, queryStr) {
+        if (queryStr) {
+            this.props.history.push('/search/' + queryStr);
+        }
         axios.get(queryUrl)
             .then(res => {
                 console.log('other movies by this director', res.data.results[0].known_for);
@@ -45,7 +48,7 @@ export class Search extends React.Component {
         let queryUrl;
         if (m === 'director') {
             queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
-            this.searchOtherMoviesByDirector(queryUrl);
+            this.searchOtherMoviesByDirector(queryUrl, queryStr);
         }
         if (m === 'title') {
             queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
@@ -95,7 +98,7 @@ export class Search extends React.Component {
             let queryPlusSeparated = this.replaceSpaces(q);
             if (m === 'director') {
                 queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
-                this.searchOtherMoviesByDirector(queryUrl);
+                this.searchOtherMoviesByDirector(queryUrl, null);
             }
             if (m === 'title') {
                 queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
