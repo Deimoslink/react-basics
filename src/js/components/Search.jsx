@@ -1,16 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-
-import {Header} from "./search/Header.jsx";
-import {SubHeader} from "./search/SubHeader.jsx";
-import {Results} from "./search/Results.jsx";
+import Header from "./search/Header.jsx";
+import SubHeader from "./search/SubHeader.jsx";
+import Results from "./search/Results.jsx";
 import {Footer} from "./Footer.jsx";
+import {connect} from 'react-redux';
 
 export class Search extends React.Component {
 
     constructor() {
         super();
-        this.state = {results: [], sortBy: 'vote_average', searchState: {mode: 'title', query: ''}};
+        // this.state = {results: [], sortBy: 'vote_average', searchState: {mode: 'title', query: ''}};
     }
 
     replaceSpaces(str) {
@@ -32,16 +32,17 @@ export class Search extends React.Component {
         axios.get(queryUrl)
             .then(res => {
                 console.log('other movies by this director', res.data.results[0].known_for);
-                this.setState({results: res.data.results[0].known_for});
+                this.props.setNewResults(res.data.results[0].known_for);
+                // this.props.setNewResults({results: res.data.results[0].known_for});
             })
             .catch(err => {
                 console.log(err);
-                this.setState({results: []});
+                this.props.setNewResults([]);
+                // this.props.setNewResults({results: []});
             });
     }
 
     triggerSearch(q, m) {
-        console.log('searching for', q, 'by', m);
         let queryObj = {[m]: q};
         let queryStr = this.jsonToQueryString(queryObj);
         let queryPlusSeparated = this.replaceSpaces(q);
@@ -69,24 +70,24 @@ export class Search extends React.Component {
             })
             .catch(err => {
                 console.log(err);
-                this.setState({results: []});
+                this.props.setNewResults([]);
+                // this.props.setNewResults({results: []});
             });
     }
 
-    triggerSort(s) {
-        this.setState({sortBy: s}, () => {
-            this.performSort(this.state.results)
-        });
+    triggerSort(mode) {
+        console.log('trigger sort', mode);
+        this.performSort(this.props.results);
     }
 
     performSort(result) {
-        console.log('perform sorting by', this.state.sortBy);
         let arr = result.sort((a, b) => {
-            if (a[this.state.sortBy] < b[this.state.sortBy]) return -1;
-            if (a[this.state.sortBy] > b[this.state.sortBy]) return 1;
+            if (a[this.props.sortBy] < b[this.props.sortBy]) return -1;
+            if (a[this.props.sortBy] > b[this.props.sortBy]) return 1;
             return 0;
         });
-        this.setState({results: arr});
+        this.props.setNewResults(arr);
+        // this.props.setNewResults({results: arr});
     }
 
     componentWillMount() {
@@ -110,23 +111,39 @@ export class Search extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.log('new props', newProps.location.search);
-        if (newProps.location.search) {
-            let queryUrl = 'https://netflixroulette.net/api/api.php' + newProps.location.search;
-            this.performSearch(queryUrl, null);
-        } else {
-            console.log('query is empty');
-        }
+        console.log('search new props', newProps);
+        // this.performSort(this.props.results);
+        // if (newProps.location.search) {
+        //     let queryUrl = 'https://netflixroulette.net/api/api.php' + newProps.location.search;
+        //     this.performSearch(queryUrl, null);
+        // } else {
+        //     console.log('query is empty');
+        // }
     }
 
     render() {
         return (
             <div className="body">
-                <Header search={this.triggerSearch.bind(this)} searchState={this.state.searchState} />
-                <SubHeader sort={this.triggerSort.bind(this)} total={this.state.results.length}/>
-                <Results results={this.state.results}/>
+                <Header search={this.triggerSearch.bind(this)}/>
+                <SubHeader sort={this.triggerSort.bind(this)}/>
+                <Results/>
                 <Footer/>
             </div>
         );
     }
 }
+
+export default connect(
+    state => ({
+        results: state.results,
+        sortBy: state.sortBy
+    }),
+    dispatch => ({
+        setNewResults: (results) => {
+            dispatch({
+                type: 'SET_RESULTS',
+                payload: results
+            })
+        }
+    })
+)(Search)

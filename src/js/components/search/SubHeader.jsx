@@ -1,16 +1,15 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 export class SubHeader extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {sortBy: 'vote_average'};
     }
 
     toggleSort(mode) {
-        this.setState({sortBy: mode}, () => {
-            this.props.sort(this.state.sortBy)
-        });
+        this.props.setSorting(mode);
+        this.props.sort(mode);
     }
 
     render() {
@@ -22,11 +21,11 @@ export class SubHeader extends React.Component {
                 <div className="filter-panel">
                     <span>Sort by</span>
                     <button onClick={this.toggleSort.bind(this, 'release_date')}
-                            className={`button button-simple ${this.state.sortBy === 'release_date' ? 'active' : null}`}>
+                            className={`button button-simple ${this.props.sortBy === 'release_date' ? 'active' : null}`}>
                         release date
                     </button>
                     <button onClick={this.toggleSort.bind(this, 'vote_average')}
-                            className={`button button-simple ${this.state.sortBy === 'vote_average' ? 'active' : null}`}>
+                            className={`button button-simple ${this.props.sortBy === 'vote_average' ? 'active' : null}`}>
                         rating
                     </button>
                 </div>
@@ -36,6 +35,20 @@ export class SubHeader extends React.Component {
 }
 
 SubHeader.propTypes = {
-    total: React.PropTypes.number,
     sort: React.PropTypes.func
 };
+
+export default connect(
+    state => ({
+        sortBy: state.sortBy,
+        total: state.results.length
+    }),
+    dispatch => ({
+        setSorting: (sorting) => {
+            dispatch({
+                type: 'SET_SORTING',
+                payload: sorting
+            })
+        }
+    })
+)(SubHeader)

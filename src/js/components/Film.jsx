@@ -3,8 +3,8 @@ import {FilmHeader} from "./film/FilmHeader.jsx";
 import {FilmSubHeader} from "./film/FilmSubHeader.jsx";
 import {Results} from "./search/Results.jsx";
 import {Footer} from "./Footer.jsx";
-
 import axios from 'axios';
+import {connect} from 'react-redux';
 
 export class Film extends React.Component {
 
@@ -17,17 +17,20 @@ export class Film extends React.Component {
         return str.replace(/ /g, '+');
     }
 
+
     searchOtherMoviesByDirector(director) {
         let queryPlusSeparated = this.replaceSpaces(director);
         let queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
         axios.get(queryUrl)
             .then(res => {
-                console.log('other movies by this director', res.data.results[0].known_for);
-                this.setState({results: res.data.results[0].known_for});
+                console.log('other movies', res.data.results[0].known_for);
+                this.props.setNewResults(res.data.results[0].known_for);
+                // this.props.setNewResults({results: res.data.results[0].known_for});
             })
             .catch(err => {
                 console.log(err);
-                this.setState({results: []});
+                this.props.setNewResults([]);
+                // this.props.setNewResults({results: []});
             });
     }
 
@@ -47,12 +50,12 @@ export class Film extends React.Component {
             })
             .catch(err => {
                 console.log(err);
-                this.setState({results: []});
+                this.props.setNewResults([]);
+                // this.props.setNewResults({results: []});
             });
     }
 
     componentWillMount() {
-        console.log('component will mount', this.props.location);
         if (this.props.location.state) {
             this.setState({movie: this.props.location.state.movie}, () => {
                 this.triggerSearch();
@@ -90,10 +93,24 @@ export class Film extends React.Component {
             <div className="body">
                 <FilmHeader movie={this.state.movie} director={this.state.director} cast={this.state.cast}/>
                 <FilmSubHeader director={this.state.director}/>
-                <Results results={this.state.results}/>
+                <Results/>
                 <Footer/>
             </div>
         );
     }
 }
+
+export default connect(
+    state => ({
+        results: state.results
+    }),
+    dispatch => ({
+        setNewResults: (results) => {
+            dispatch({
+                type: 'SET_RESULTS',
+                payload: results
+            })
+        }
+    })
+)(Film)
 
