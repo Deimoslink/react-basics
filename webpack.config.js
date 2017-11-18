@@ -9,15 +9,16 @@ var extractPlugin = new ExtractTextPlugin({
 });
 
 module.exports = {
-    entry: './src/js/app.js',
+    entry: './src/js/app.jsx',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        publicPath: '/'
     },
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.jsx?$/,
                 use: [
                     {
                         loader: 'babel-loader',
@@ -46,6 +47,11 @@ module.exports = {
                 ]
             }
         ]
+    },
+    devServer: {
+        inline: true,
+        contentBase: './',
+        historyApiFallback: true
     },
     plugins: [
         new webpack.optimize.UglifyJsPlugin(),

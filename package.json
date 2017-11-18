@@ -22,8 +22,10 @@
   "homepage": "https://github.com/Deimoslink/react-basics#readme",
   "dependencies": {
     "express": "^4.15.4",
+    "axios": "^0.16.2",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "react-router-dom": "^4.2.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
