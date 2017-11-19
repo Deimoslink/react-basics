@@ -20,7 +20,6 @@ const searchQueryReducer = function(state = '', action) {
 };
 const directorReducer = function(state='', action) {
     if (action.type === 'SET_DIRECTOR') {
-        console.log('director reducer');
         return action.payload
     }
     return state;

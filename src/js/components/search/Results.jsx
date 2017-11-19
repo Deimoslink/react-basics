@@ -18,7 +18,7 @@ export class Results extends React.Component {
     }
 
     render() {
-        console.log('rerender results');
+        console.log('rerender results', this.props.results);
         let chunks = this.chunkify(this.props.results, 3);
         return (
             <div className="results">{chunks.map((chunk, j) =>

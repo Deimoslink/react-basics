@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 export class FilmSubHeader extends React.Component {
 
@@ -10,7 +11,7 @@ export class FilmSubHeader extends React.Component {
         return (
             <div className="sub-header">
                 <div>
-                    <span>Movies by {this.props.director}</span>
+                    <span>Movies by {this.props.director ? this.props.director.name : 'N/A'}</span>
                 </div>
             </div>
         );
@@ -18,5 +19,11 @@ export class FilmSubHeader extends React.Component {
 }
 
 FilmSubHeader.propTypes = {
-    director: React.PropTypes.string
+    director: React.PropTypes.object
 };
+
+export default connect(
+    state => ({
+        director: state.director
+    })
+)(FilmSubHeader)

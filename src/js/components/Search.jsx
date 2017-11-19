@@ -9,7 +9,7 @@ class Search extends React.Component {
     render() {
         return (
             <div className="body">
-                <Header />
+                <Header/>
                 <SubHeader/>
                 <Results/>
                 <Footer/>

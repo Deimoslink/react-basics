@@ -21,18 +21,9 @@ class App extends React.Component {
     }
 }
 
-
 render(
     <Provider store={store}>
         <App/>
     </Provider>,
     window.document.getElementById('app')
 );
-
-// if (PRODUCTION) {
-//     console.log('Production mode is on');
-// }
-//
-// store.subscribe(() => {
-//     console.log('store changed', store.getState());
-// });
