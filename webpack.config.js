@@ -10,6 +10,8 @@ var extractPlugin = new ExtractTextPlugin({
 
 module.exports = {
     entry: './src/js/app.jsx',
+    devtool: 'source-map',
+    // resolve: {extensions: ['js', 'jsx']},
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
@@ -54,7 +56,7 @@ module.exports = {
         historyApiFallback: true
     },
     plugins: [
-        new webpack.optimize.UglifyJsPlugin(),
+        // new webpack.optimize.UglifyJsPlugin(),
         new webpack.DefinePlugin({
             PRODUCTION: process.env.NODE_ENV
         }),

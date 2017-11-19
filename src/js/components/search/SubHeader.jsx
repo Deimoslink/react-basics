@@ -9,7 +9,6 @@ export class SubHeader extends React.Component {
 
     toggleSort(mode) {
         this.props.setSorting(mode);
-        this.props.sort(mode);
     }
 
     render() {
@@ -35,7 +34,7 @@ export class SubHeader extends React.Component {
 }
 
 SubHeader.propTypes = {
-    sort: React.PropTypes.func
+
 };
 
 export default connect(

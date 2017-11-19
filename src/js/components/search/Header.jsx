@@ -1,30 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {setNewSearchQuery, setNewSearchState, performSearch} from '../../actions'
 
 export class Header extends React.Component {
-
-    constructor() {
-        super();
-    }
-
-    toggleSearch(mode) {
-        this.props.setSearchParams({mode: mode, query: this.props.searchState.query});
-        console.log('search by', mode);
-    }
-
-    onTriggerSearch() {
-        this.props.search(this.props.searchState.query, this.props.searchState.mode);
-    }
-
-    onHandleChange(e) {
-        this.props.setSearchParams({mode: this.props.searchState.mode, query: e.target.value});
-    }
-
-    componentWillMount() {
-        // this.setState({searchBy: this.props.searchState.mode, searchQuery: this.props.searchState.query})
-    }
-
     render() {
+        const {searchState, searchQuery, setNewSearchQuery, setNewSearchState, performSearch} = this.props;
         return (
             <div className="header">
                 <div className="header-row header-subtitle-wrapper">
@@ -34,23 +14,23 @@ export class Header extends React.Component {
                     <h1>Find your movie</h1>
                 </div>
                 <div className="header-row input-wrapper">
-                    <input type="text" placeholder="Christopher Nolan" value={this.props.searchState.query} onChange={(e) => this.onHandleChange(e)} />
+                    <input type="text" placeholder="Christopher Nolan" value={searchQuery} onChange={(e) => setNewSearchQuery(e.target.value)} />
                     <i className="fa fa-level-down"></i>
                 </div>
                 <div className="header-row button-wrapper">
                     <div className="filter-panel">
                         <span>Search by</span>
-                        <button onClick={this.toggleSearch.bind(this, 'title')}
-                                className={`button button-small ${this.props.searchState.mode === 'title' ? 'active' : null}`}>
+                        <button onClick={() => setNewSearchState('title')}
+                                className={`button button-small ${searchState === 'title' ? 'active' : null}`}>
                             Title
                         </button>
-                        <button onClick={this.toggleSearch.bind(this, 'director')}
-                                className={`button button-small ${this.props.searchState.mode === 'director' ? 'active' : null}`}>
+                        <button onClick={() => setNewSearchState('director')}
+                                className={`button button-small ${searchState === 'director' ? 'active' : null}`}>
                             Director
                         </button>
                     </div>
                     <div>
-                        <button onClick={this.onTriggerSearch.bind(this)} className="button button-big active">Search</button>
+                        <button onClick={() => performSearch()} className="button button-big active">Search</button>
                     </div>
                 </div>
             </div>
@@ -58,21 +38,20 @@ export class Header extends React.Component {
     }
 }
 
+
 Header.propTypes = {
-    search: React.PropTypes.func,
-    searchState: React.PropTypes.object
+    searchQuery: React.PropTypes.string,
+    searchState: React.PropTypes.string
 };
 
 export default connect(
     state => ({
-        searchState: state.searchState
+        searchState: state.searchState,
+        searchQuery: state.searchQuery
     }),
-    dispatch => ({
-        setSearchParams: (sorting) => {
-            dispatch({
-                type: 'SET_SEARCH_STATE',
-                payload: sorting
-            })
-        }
-    })
+    {
+        setNewSearchState,
+        setNewSearchQuery,
+        performSearch
+    }
 )(Header)

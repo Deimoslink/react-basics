@@ -5,6 +5,7 @@ import {Results} from "./search/Results.jsx";
 import {Footer} from "./Footer.jsx";
 import axios from 'axios';
 import {connect} from 'react-redux';
+import {performSearchByDirector, performSearchForAMovie} from '../actions'
 
 export class Film extends React.Component {
 
@@ -18,21 +19,21 @@ export class Film extends React.Component {
     }
 
 
-    searchOtherMoviesByDirector(director) {
-        let queryPlusSeparated = this.replaceSpaces(director);
-        let queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
-        axios.get(queryUrl)
-            .then(res => {
-                console.log('other movies', res.data.results[0].known_for);
-                this.props.setNewResults(res.data.results[0].known_for);
-                // this.props.setNewResults({results: res.data.results[0].known_for});
-            })
-            .catch(err => {
-                console.log(err);
-                this.props.setNewResults([]);
-                // this.props.setNewResults({results: []});
-            });
-    }
+    // searchOtherMoviesByDirector(director) {
+    //     let queryPlusSeparated = this.replaceSpaces(director);
+    //     let queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
+    //     axios.get(queryUrl)
+    //         .then(res => {
+    //             console.log('other movies', res.data.results[0].known_for);
+    //             this.props.setNewResults(res.data.results[0].known_for);
+    //             // this.props.setNewResults({results: res.data.results[0].known_for});
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //             this.props.setNewResults([]);
+    //             // this.props.setNewResults({results: []});
+    //         });
+    // }
 
     triggerSearch() {
         let id = this.state.movie.id;
@@ -45,6 +46,9 @@ export class Film extends React.Component {
                         director = person.name;
                     }
                 });
+                if (director) {
+                    this.props.setDirector(director);
+                }
                 this.setState({director: director, cast: res.data.credits.cast});
                 this.searchOtherMoviesByDirector(director);
             })
@@ -56,42 +60,34 @@ export class Film extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.location.state) {
-            this.setState({movie: this.props.location.state.movie}, () => {
-                this.triggerSearch();
-            })
-        } else {
-            console.log('pure loading!!!', this.props.location.search);
-            let queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + this.props.match.params.title;
-            axios.get(queryUrl)
-                .then(res => {
-                    this.setState({movie: res.data.results[0]}, () => {
-                        this.triggerSearch();
-                    });
-                    console.log(res);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-        }
+        const {performSearchByDirector, performSearchForAMovie} = this.props;
+        // performSearchByDirector('nolan');
+        performSearchForAMovie(this.props.location.search, this.props.match.params.title);
+        // if (this.props.location.state) {
+        //     this.setState({movie: this.props.location.state.movie}, () => {
+        //         this.triggerSearch();
+        //     })
+        // } else {
+
+        // }
     }
 
     componentWillReceiveProps(newProps) {
-        let queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + newProps.match.params.title;
-        axios.get(queryUrl)
-            .then(res => {
-                this.setState({movie: res.data.results[0]});
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        // let queryUrl = 'https://api.themoviedb.org/3/search/movie?api_key=f3444ae7a15965784cb64735f4647f14&query=' + newProps.match.params.title;
+        // axios.get(queryUrl)
+        //     .then(res => {
+        //         this.setState({movie: res.data.results[0]});
+        //         console.log(res);
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     });
     }
 
     render() {
         return (
             <div className="body">
-                <FilmHeader movie={this.state.movie} director={this.state.director} cast={this.state.cast}/>
+                <FilmHeader movie={this.props.movie} director={this.state.director} cast={this.state.cast}/>
                 <FilmSubHeader director={this.state.director}/>
                 <Results/>
                 <Footer/>
@@ -102,15 +98,13 @@ export class Film extends React.Component {
 
 export default connect(
     state => ({
-        results: state.results
+        results: state.results,
+        movie: state.movie
     }),
-    dispatch => ({
-        setNewResults: (results) => {
-            dispatch({
-                type: 'SET_RESULTS',
-                payload: results
-            })
-        }
-    })
+    {
+        performSearchByDirector,
+        performSearchForAMovie
+    }
 )(Film)
+
 

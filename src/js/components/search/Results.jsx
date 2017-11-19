@@ -2,6 +2,7 @@ import React from 'react';
 import {Movie} from './Movie.jsx';
 
 import {connect} from 'react-redux';
+import {getSortedResults} from '../../selectors'
 
 export class Results extends React.Component {
 
@@ -32,9 +33,8 @@ export class Results extends React.Component {
 
 export default connect(
     state => ({
-        results: state.results
-    }),
-    dispatch => ({})
+        results: getSortedResults(state)
+    })
 )(Results)
 
 Results.propTypes = {
