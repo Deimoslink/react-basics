@@ -18,10 +18,6 @@ export class FilmSubHeader extends React.Component {
     }
 }
 
-FilmSubHeader.propTypes = {
-    director: React.PropTypes.object
-};
-
 export default connect(
     state => ({
         director: state.director

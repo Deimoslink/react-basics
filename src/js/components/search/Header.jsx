@@ -72,12 +72,6 @@ export class Header extends React.Component {
     }
 }
 
-
-Header.propTypes = {
-    searchQuery: React.PropTypes.string,
-    searchState: React.PropTypes.string
-};
-
 export default connect(
     state => ({
         searchState: state.searchState,

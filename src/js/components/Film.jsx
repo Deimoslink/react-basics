@@ -40,4 +40,3 @@ export default connect(
         performSearchForAMovie
     }
 )(Film)
-

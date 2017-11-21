@@ -17,7 +17,3 @@ export class Movie extends React.Component {
         );
     }
 }
-
-Movie.propTypes = {
-    movie: React.PropTypes.object
-};

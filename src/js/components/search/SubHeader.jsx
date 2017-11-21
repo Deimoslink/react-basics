@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {setSorting} from '../../actions'
 
 export class SubHeader extends React.Component {
 
@@ -7,11 +8,8 @@ export class SubHeader extends React.Component {
         super(props);
     }
 
-    toggleSort(mode) {
-        this.props.setSorting(mode);
-    }
-
     render() {
+        const {setSorting} = this.props;
         return (
             <div className="sub-header">
                 <div>
@@ -19,11 +17,11 @@ export class SubHeader extends React.Component {
                 </div>
                 <div className="filter-panel">
                     <span>Sort by</span>
-                    <button onClick={this.toggleSort.bind(this, 'release_date')}
+                    <button onClick={() => setSorting('release_date')}
                             className={`button button-simple ${this.props.sortBy === 'release_date' ? 'active' : null}`}>
                         release date
                     </button>
-                    <button onClick={this.toggleSort.bind(this, 'vote_average')}
+                    <button onClick={() => setSorting('vote_average')}
                             className={`button button-simple ${this.props.sortBy === 'vote_average' ? 'active' : null}`}>
                         rating
                     </button>
@@ -33,21 +31,12 @@ export class SubHeader extends React.Component {
     }
 }
 
-SubHeader.propTypes = {
-
-};
-
 export default connect(
     state => ({
         sortBy: state.sortBy,
         total: state.results.length
     }),
-    dispatch => ({
-        setSorting: (sorting) => {
-            dispatch({
-                type: 'SET_SORTING',
-                payload: sorting
-            })
-        }
-    })
+    {
+        setSorting
+    }
 )(SubHeader)

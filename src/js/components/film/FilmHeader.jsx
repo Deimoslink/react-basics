@@ -33,11 +33,6 @@ export class FilmHeader extends React.Component {
     }
 }
 
-FilmHeader.propTypes = {
-    movie: React.PropTypes.object,
-    director: React.PropTypes.object
-};
-
 export default connect(
     state => ({
         movie: state.movie,

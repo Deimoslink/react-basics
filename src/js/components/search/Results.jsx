@@ -36,7 +36,3 @@ export default connect(
         results: getSortedResults(state)
     })
 )(Results)
-
-Results.propTypes = {
-    results: React.PropTypes.array
-};

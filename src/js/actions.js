@@ -37,6 +37,11 @@ export const setNewSearchQuery = (searchQuery) => ({
     payload: searchQuery
 });
 
+export const setSorting = (sorting) => ({
+    type: 'SET_SORTING',
+    payload: sorting
+});
+
 export const performSearch = () => {
     return (dispatch, getState) => {
         const {searchState, searchQuery} = getState();
@@ -88,11 +93,9 @@ export const performSearch = () => {
     }
 };
 
-export const performSearchByDirector = () => {
+export const performSearchByDirector = (director) => {
     console.log('performSearchByDirector');
-    return (dispatch, getState) => {
-        const {director} = getState();
-        let state = getState();
+    return (dispatch) => {
         let queryPlusSeparated = replaceSpaces(director.name);
         let queryUrl = 'https://api.themoviedb.org/3/search/person?api_key=f3444ae7a15965784cb64735f4647f14&query=' + queryPlusSeparated;
         axios.get(queryUrl)
@@ -111,12 +114,10 @@ export const performSearchByDirector = () => {
     }
 };
 
-export const getDirector = () => {
+export const getDirector = (movieId) => {
     console.log('get director');
-    return (dispatch, getState) => {
-        const {movie} = getState();
-        let id = movie.id;
-        let query = 'https://api.themoviedb.org/3/movie/' + id + '?api_key=f3444ae7a15965784cb64735f4647f14&append_to_response=credits';
+    return (dispatch) => {
+        let query = 'https://api.themoviedb.org/3/movie/' + movieId + '?api_key=f3444ae7a15965784cb64735f4647f14&append_to_response=credits';
         axios.get(query)
             .then(res => {
                 let director;
@@ -129,6 +130,9 @@ export const getDirector = () => {
                     dispatch (
                         setDirector(director)
                     );
+                    dispatch (
+                        performSearchByDirector(director)
+                    )
                 }
             })
             .catch(err => {
@@ -147,26 +151,12 @@ export const performSearchForAMovie = (search, title) => {
                 dispatch(
                     setNewMovie(res.data.results[0])
                 );
-                setTimeout(() => {
-                    console.log('step 2');
-                        dispatch(
-                            getDirector()
-                        )
-                }, 100);
-                setTimeout(() => {
-                    console.log('step 3');
-                    dispatch(
-                        performSearchByDirector()
-                    )
-                }, 200);
-
-                // dispatch(
-                //     getDirector()
-                // );
-                // dispatch(
-                //     performSearchByDirector()
-                // );
-
+                dispatch(
+                    getDirector(res.data.results[0].id)
+                );
+                dispatch(
+                    performSearchByDirector()
+                );
             })
             .catch(err => {
                 console.log(err);
