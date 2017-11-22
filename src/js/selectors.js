@@ -1,6 +1,5 @@
 import {createSelector} from 'reselect';
 
-
 export const getResults = state => state.results;
 export const getSortBy = state => state.sortBy;
 

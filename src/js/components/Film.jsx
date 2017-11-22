@@ -5,6 +5,7 @@ import {Results} from "./search/Results.jsx";
 import {Footer} from "./Footer.jsx";
 import {connect} from 'react-redux';
 import {performSearchByDirector, performSearchForAMovie} from '../actions'
+import {withRouter} from 'react-router-dom';
 
 export class Film extends React.Component {
 
@@ -30,7 +31,7 @@ export class Film extends React.Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     state => ({
         results: state.results,
         movie: state.movie
@@ -39,4 +40,4 @@ export default connect(
         performSearchByDirector,
         performSearchForAMovie
     }
-)(Film)
+)(Film));

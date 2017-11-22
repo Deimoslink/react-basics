@@ -11,7 +11,6 @@ export class Movie extends React.Component {
                     <img src={'http://image.tmdb.org/t/p/w185/' + this.props.movie.poster_path} alt=""/>
                     <h2>{this.props.movie.title}</h2>
                     <span className="year">{this.props.movie.release_date.slice(0,4)}</span>
-                    {/*<span className="genre">{this.props.movie.category}</span>*/}
                 </Link>
             </div>
         );

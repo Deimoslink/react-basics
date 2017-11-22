@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import {routerReducer} from 'react-router-redux';
 
 const sortByReducer = function(state = 'vote_average', action) {
     if (action.type === 'SET_SORTING') {
@@ -38,6 +39,7 @@ const resultsReducer = function(state=[], action) {
 };
 
 const reducer = combineReducers({
+    routing: routerReducer,
     sortBy: sortByReducer,
     searchState: searchStateReducer,
     searchQuery: searchQueryReducer,

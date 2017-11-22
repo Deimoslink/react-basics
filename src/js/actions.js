@@ -141,7 +141,6 @@ export const getDirector = (movieId) => {
     }
 };
 
-
 export const performSearchForAMovie = (search, title) => {
     console.log('perform search for a movie');
     return (dispatch) => {

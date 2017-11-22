@@ -3,7 +3,7 @@ import Header from "./search/Header.jsx";
 import SubHeader from "./search/SubHeader.jsx";
 import Results from "./search/Results.jsx";
 import {Footer} from "./Footer.jsx";
-import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 class Search extends React.Component {
     render() {
@@ -18,4 +18,4 @@ class Search extends React.Component {
     }
 }
 
-export default Search
+export default withRouter(Search);
