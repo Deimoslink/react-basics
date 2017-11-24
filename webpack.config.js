@@ -9,9 +9,8 @@ var extractPlugin = new ExtractTextPlugin({
 });
 
 module.exports = {
-    entry: './src/js/app.jsx',
+    entry: './src/index.jsx',
     devtool: 'source-map',
-    // resolve: {extensions: ['js', 'jsx']},
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
