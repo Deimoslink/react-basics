@@ -105,6 +105,6 @@ export const performSearchByDirector = (directorId) => {
                 dispatch(
                     setNewResults([], true)
                 )
-s            });
+            });
     }
 };

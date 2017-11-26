@@ -1,9 +1,16 @@
-import {applyMiddleware, createStore} from 'redux';
+import {connectRoutes} from 'redux-first-router';
+import {applyMiddleware, createStore, combineReducers, compose} from 'redux';
 import {createLogger} from 'redux-logger';
 import thunk from 'redux-thunk';
+import createHistory from 'history/createBrowserHistory';
 import reducer from './reducers'
+import routesMap from './routes';
 
-const middleware = applyMiddleware(thunk, createLogger({collapsed: false}));
-const store = createStore(reducer, middleware);
+const history = createHistory();
 
-export default store
+const { reducer: locationReducer, middleware: locationMiddleware, enhancer } = connectRoutes(history, routesMap) // yes, 3 redux aspects
+
+const middlewares = applyMiddleware(thunk, createLogger({collapsed: false}), locationMiddleware);
+const store = createStore(combineReducers({ location: locationReducer, ...reducer }), compose(enhancer, middlewares));
+
+export default store;

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {setNewSearchQuery, setNewSearchState, performSearch} from '../../actions'
+import Link from 'redux-first-router-link';
+import {setNewSearchQuery, setNewSearchState} from '../../actions'
 
 class Header extends React.Component {
     render() {
@@ -34,9 +35,11 @@ class Header extends React.Component {
                         </button>
                     </div>
                     <div>
-                        <button onClick={() => {
-                            performSearch(this.props.searchState, this.props.searchQuery)
-                        }} className="button button-big active">Search</button>
+                        <Link
+                            to={{type: 'ROUTER:SEARCH', payload: {type: this.props.searchState, query: this.props.searchQuery}}}
+                            className="button button-big active">
+                            Search
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -51,7 +54,6 @@ export default connect(
     }),
     {
         setNewSearchState,
-        setNewSearchQuery,
-        performSearch
+        setNewSearchQuery
     }
 )(Header)
