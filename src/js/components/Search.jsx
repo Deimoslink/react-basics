@@ -2,8 +2,7 @@ import React from 'react';
 import Header from "./search/Header.jsx";
 import SubHeader from "./search/SubHeader.jsx";
 import Results from "./search/Results.jsx";
-import {Footer} from "./Footer.jsx";
-import {withRouter} from 'react-router-dom';
+import Footer from "./Footer.jsx";
 
 class Search extends React.Component {
     render() {
@@ -18,4 +17,4 @@ class Search extends React.Component {
     }
 }
 
-export default withRouter(Search);
+export default Search;

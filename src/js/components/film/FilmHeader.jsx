@@ -1,22 +1,17 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+// import Link from 'redux-first-router-link';
 import {connect} from 'react-redux';
+import {setNewMovie} from '../../actions';
+import {getMovie} from '../../selectors';
 
-export class FilmHeader extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
+class FilmHeader extends React.Component {
     render() {
         return (
             <div className="film-header">
                 <div className="film-header-logo-wrapper">
                     <span>netflixroulette</span>
-                    <button className="button button-big active search-btn">
-                        <Link to={{pathname: "/search"}} style={{textDecoration: 'none', color: 'inherit'}}>
-                            Search
-                        </Link>
+                    <button className="button button-big active search-btn" onClick={() => this.props.setNewMovie(null)}>
+                        Search
                     </button>
                 </div>
                 <div>
@@ -25,7 +20,7 @@ export class FilmHeader extends React.Component {
                         <h1 className="movie-title">{this.props.movie.title}<span className="rating-badge">{this.props.movie.vote_average}</span></h1>
                         <p>Year: {this.props.movie.release_date || 'N/A'} Runtime: {this.props.movie.runtime || 'N/A'}</p>
                         <p>{this.props.movie.summary}</p>
-                        <p>Director: {this.props.director.name}</p>
+                        <p>Director: {this.props.director && this.props.director.name}</p>
                     </div>
                 </div>
             </div>
@@ -35,7 +30,9 @@ export class FilmHeader extends React.Component {
 
 export default connect(
     state => ({
-        movie: state.movie,
+        movie: getMovie(state),
         director: state.director
-    })
+    }), {
+        setNewMovie
+    }
 )(FilmHeader)

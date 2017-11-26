@@ -1,10 +1,10 @@
 import React from 'react';
-import {Movie} from './Movie.jsx';
+import Movie from './Movie.jsx';
 
 import {connect} from 'react-redux';
 import {getSortedResults} from '../../selectors'
 
-export class Results extends React.Component {
+class Results extends React.Component {
 
     chunkify(array, chunkSize) {
         if (!array) {

@@ -2,12 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {setSorting} from '../../actions'
 
-export class SubHeader extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
+class SubHeader extends React.Component {
     render() {
         const {setSorting} = this.props;
         return (
@@ -34,7 +29,7 @@ export class SubHeader extends React.Component {
 export default connect(
     state => ({
         sortBy: state.sortBy,
-        total: state.results.length
+        total: state.results ? Object.keys(state.results).length : 0
     }),
     {
         setSorting

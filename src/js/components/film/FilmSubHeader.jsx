@@ -1,12 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-export class FilmSubHeader extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
+class FilmSubHeader extends React.Component {
     render() {
         return (
             <div className="sub-header">

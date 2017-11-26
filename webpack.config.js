@@ -52,7 +52,9 @@ module.exports = {
     devServer: {
         inline: true,
         contentBase: './',
-        historyApiFallback: true
+        historyApiFallback: true,
+      host: '0.0.0.0',
+      disableHostCheck: true
     },
     plugins: [
         // new webpack.optimize.UglifyJsPlugin(),
