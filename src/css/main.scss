@@ -135,6 +135,9 @@ button:focus {
   width: 180px;
   height: 30px;
   text-transform: uppercase;
+  line-height: 30px;
+  text-decoration: none;
+  text-align: center;
 }
 .button-big.active, .button-small.active {
   background-color: #FF3333;
