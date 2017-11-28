@@ -2,6 +2,8 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import createHistory from 'history/createMemoryHistory';
 import { connectRoutes } from 'redux-first-router';
 import {setMovieAndGetDetails, performSearch} from '../src/js/actions';
+import reducer from '../src/js/reducers';
+import reduxThunk from 'redux-thunk';
 
 export default async function configureStore(req) {
     const history = createHistory({ initialEntries: [req.path] });
@@ -18,9 +20,10 @@ export default async function configureStore(req) {
         }}
     };
 
-    const { reducer, middleware, enhancer, thunk } = connectRoutes(history, routesMap);
-    const rootReducer = combineReducers({ location: reducer });
-    const store = createStore(rootReducer, compose(enhancer, applyMiddleware(middleware)));
+    const { reducer: locationReducer, middleware: locationMiddleware, enhancer, thunk } = connectRoutes(history, routesMap);
+    const middleWares = applyMiddleware(reduxThunk, locationMiddleware);
+    const rootReducer = combineReducers({ location: locationReducer, ...reducer });
+    const store = createStore(rootReducer, compose(enhancer, middleWares));
 
 
     await thunk(store);
