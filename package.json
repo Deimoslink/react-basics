@@ -4,11 +4,10 @@
   "description": "react basics for epam mentoring program",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "webpack-dev-server --content-base --inline --hot --host 0.0.0.0 --port 8080",
     "build": "webpack",
     "buildprod": "webpack -p",
-    "server": "node server/server.js",
     "babel-compile": "babel-node server/server.js"
   },
   "repository": {
@@ -47,6 +46,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^0.11.2",
     "html-webpack-plugin": "^2.30.1",
+    "jest-cli": "^21.2.1",
     "node-sass": "^4.5.1",
     "sass-loader": "^6.0.6",
     "webpack": "^3.5.5",

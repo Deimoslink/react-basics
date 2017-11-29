@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Link from 'redux-first-router-link';
-import {setNewSearchQuery, setNewSearchState} from '../../actions'
+import {setNewSearchQuery, setNewSearchState} from '../../actions';
+import {getSearchQuery, getSearchState} from '../../selectors'
 
 class Header extends React.Component {
     render() {
-        const {searchState, searchQuery, setNewSearchQuery, setNewSearchState, performSearch} = this.props;
+        const {searchState, searchQuery, setNewSearchQuery, setNewSearchState} = this.props;
         return (
             <div className="header">
                 <div className="header-row header-subtitle-wrapper">
@@ -49,8 +50,8 @@ class Header extends React.Component {
 
 export default connect(
     state => ({
-        searchState: state.searchState,
-        searchQuery: state.searchQuery
+        searchState: getSearchState,
+        searchQuery: getSearchQuery
     }),
     {
         setNewSearchState,
