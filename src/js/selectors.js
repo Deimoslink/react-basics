@@ -13,7 +13,7 @@ export const getResultsToDisplay = createSelector(
     getKnownForResults,
     getMovieId,
     (results, knowForResults, movieId) => movieId ? knowForResults : results
-)
+);
 
 export const getSortedResults = createSelector(
     getResultsToDisplay,
