@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {getDirector} from '../../selectors';
 
 class FilmSubHeader extends React.Component {
     render() {
@@ -15,6 +16,6 @@ class FilmSubHeader extends React.Component {
 
 export default connect(
     state => ({
-        director: state.director
+        director: getDirector(state)
     })
 )(FilmSubHeader)

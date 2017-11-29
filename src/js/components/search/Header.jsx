@@ -6,7 +6,7 @@ import {getSearchQuery, getSearchState} from '../../selectors'
 
 class Header extends React.Component {
     render() {
-        const {searchState, searchQuery, setNewSearchQuery, setNewSearchState} = this.props;
+        const {searchState, searchQuery, setNewSearchQuery, setNewSearchState, performSearch} = this.props;
         return (
             <div className="header">
                 <div className="header-row header-subtitle-wrapper">
@@ -50,8 +50,8 @@ class Header extends React.Component {
 
 export default connect(
     state => ({
-        searchState: getSearchState,
-        searchQuery: getSearchQuery
+        searchState: getSearchState(state),
+        searchQuery: getSearchQuery(state)
     }),
     {
         setNewSearchState,

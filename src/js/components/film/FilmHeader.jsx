@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'redux-first-router-link';
 import {connect} from 'react-redux';
-import {getMovie} from '../../selectors';
+import {getMovie, getDirector} from '../../selectors';
 
 class FilmHeader extends React.Component {
     render() {
@@ -30,6 +30,6 @@ class FilmHeader extends React.Component {
 export default connect(
     state => ({
         movie: getMovie(state),
-        director: state.director
+        director: getDirector(state)
     })
 )(FilmHeader)

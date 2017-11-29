@@ -6,6 +6,7 @@ export const getSortBy = state => state.sortBy;
 export const getMovieId = state => state.movie;
 export const getSearchState = state => state.searchState;
 export const getSearchQuery = state => state.searchQuery;
+export const getDirector = state => state.director;
 
 export const getResultsToDisplay = createSelector(
     getResults,

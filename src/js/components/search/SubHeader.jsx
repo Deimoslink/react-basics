@@ -29,7 +29,7 @@ class SubHeader extends React.Component {
 
 export default connect(
     state => ({
-        sortBy: getSortBy,
+        sortBy: getSortBy(state),
         total: Object.keys(state.results || {}).length
     }),
     {
