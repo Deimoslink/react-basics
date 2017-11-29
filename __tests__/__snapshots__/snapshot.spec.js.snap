@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`subheader buttons change class when active  1`] = `
+<div
+  className="sub-header"
+>
+  <div>
+    <span
+      hidden={true}
+    >
+      0
+       movies found
+    </span>
+  </div>
+  <div
+    className="filter-panel"
+  >
+    <span>
+      Sort by
+    </span>
+    <button
+      className="button button-simple null"
+      onClick={[Function]}
+    >
+      release date
+    </button>
+    <button
+      className="button button-simple active"
+      onClick={[Function]}
+    >
+      rating
+    </button>
+  </div>
+</div>
+`;
