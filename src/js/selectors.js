@@ -36,4 +36,4 @@ export const getMovie = createSelector(
     (movieId, results, knownFor) => {
         return results[movieId] || knownFor[movieId] || {}
     }
-)
+);
